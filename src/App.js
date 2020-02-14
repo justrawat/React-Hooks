@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from "react";
+import Ingredients from "./components/Ingredients/Ingredients";
+import Auth from "./components/Auth";
+import { AuthContext } from "./context/auth-context";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = props => {
+  const authContext = useContext(AuthContext);
+  //if the authentication is failing it will stay at the auth place and when the authetication passes, it renders the ingredients componenet.
+  let content = <Auth />;
+  if (authContext.isAuth) {
+    content = <Ingredients />;
+  }
+
+  return content;
+};
 
 export default App;
