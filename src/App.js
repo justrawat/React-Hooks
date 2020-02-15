@@ -5,7 +5,7 @@ import { AuthContext } from "./context/auth-context";
 
 const App = props => {
   const authContext = useContext(AuthContext);
-  //if the authentication is failing it will stay at the auth place and when the authetication passes, it renders the ingredients componenet.
+  //if the authentication is failing it will stay at the auth page and when the authetication passes, it renders the ingredients componenet.
   let content = <Auth />;
   if (authContext.isAuth) {
     content = <Ingredients />;

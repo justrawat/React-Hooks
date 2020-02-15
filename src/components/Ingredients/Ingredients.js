@@ -5,6 +5,7 @@ import ErrorModal from "../UI/ErrorModal";
 import Search from "./Search";
 import useHttp from "../../hooks/http";
 
+//reducer for ingredients-useReducer.
 const ingredientReducer = (currentIngredients, action) => {
   switch (action.type) {
     case "SET":
@@ -19,7 +20,10 @@ const ingredientReducer = (currentIngredients, action) => {
 };
 
 const Ingredients = () => {
+  //using useReducer instead of useState.
   const [userIngredients, dispatch] = useReducer(ingredientReducer, []);
+
+  //useHttp is our custom hook.
   const {
     isLoading,
     error,
@@ -45,11 +49,13 @@ const Ingredients = () => {
     }
   }, [data, reqExtra, reqIdentifer, isLoading, error]);
 
+  //ingredients left after applying the filter.
   const filteredIngredientsHandler = useCallback(filteredIngredients => {
     // setUserIngredients(filteredIngredients);
     dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
+  //Not making http requests back to back, instead we use useCallback to store the value returned once and then not updating it until the props change.
   const addIngredientHandler = useCallback(
     ingredient => {
       sendRequest(
@@ -66,7 +72,7 @@ const Ingredients = () => {
   const removeIngredientHandler = useCallback(
     ingredientId => {
       sendRequest(
-        `https://react-hooks-update.firebaseio.com/ingredients/${ingredientId}.json`,
+        `https://react-hooks-5ffa7.firebaseio.com/ingredients/${ingredientId}.json`,
         "DELETE",
         null,
         ingredientId,
@@ -76,10 +82,12 @@ const Ingredients = () => {
     [sendRequest]
   );
 
+  //useCallback returns a memoized callback.
   const clearError = useCallback(() => {
     // dispatchHttp({ type: 'CLEAR' });
   }, []);
 
+  //Storing the ingredients list returned by the IngredientsList component using useMemeo so that it only alters when the list has been altered.
   const ingredientList = useMemo(() => {
     return (
       <IngredientList
